@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "medods.v1;medodsv1";
+
+service Medods {
+  rpc Doctors(DoctorsRequest) returns (DoctorsResponse) {}
+  rpc Schedule(ScheduleRequest) returns (ScheduleResponse) {}
+  rpc AppointmentsDuration(AppointmentsDurationRequest) returns (AppointmentsDurationResponse) {}
+  rpc PatientFind(PatientFindRequest) returns (PatientFindResponse) {}
+  rpc MakeAppointment(MakeAppointmentRequest) returns (MakeAppointmentResponse) {}
+  rpc Healthcheck(Empty) returns (HealthcheckResponse) {}
+}
+
+message Empty {}
+
+message DoctorsRequest {
+  int32 clinic_id = 1;
+}
+
+message DoctorsResponse {
+  map<int32, DoctorsAppointmentInfo> doctors = 1;
+}
+
+message DoctorsAppointmentInfo {
+  int32 id = 1;
+  string surname = 2;
+  string name = 3;
+  repeated string dates = 4;
+  int32 duration = 5;
+  repeated Specialization specialties = 6;
+}
+
+message Specialization {
+  int32 id = 1;
+  string title = 2;
+  string user_group = 3;
+}
+
+message ScheduleRequest {
+  int32 clinic_id = 1;
+}
+
+message ScheduleResponse {
+  map<int32, ScheduleDate> doctors = 1;
+}
+
+message ScheduleDate {
+  map<string, Dates> dates = 1;
+}
+
+message Dates {
+  repeated string dates = 1;
+}
+
+message AppointmentsDurationRequest {
+  int32 doctor_id = 1;
+  int32 clinic_id = 2;
+}
+
+message AppointmentsDurationResponse {
+  int32 duration = 1; // appointment duration in minutes
+}
+
+message PatientFindRequest {
+  string surname = 1;
+  string phone = 3;
+}
+
+message PatientFindResponse {
+  int32 id = 1;
+}
+
+message MakeAppointmentRequest {
+  int32 id = 1;
+  string name = 2;
+  string surname = 3;
+  string phone = 4;
+  int32 clinic_id = 5;
+  int32 duration = 6;
+  string date = 7;
+  string time = 8;
+  string doctor_id = 9;
+  string note = 10;
+}
+
+message MakeAppointmentResponse {
+  int32 id = 1;
+}
+
+message HealthcheckResponse {
+  bool health = 1;
+}
