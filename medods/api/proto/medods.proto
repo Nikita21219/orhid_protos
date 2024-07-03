@@ -30,6 +30,7 @@ message DoctorsAppointmentInfo {
   repeated string dates = 4;
   int32 duration = 5;
   repeated Specialization specialties = 6;
+  string middle_name = 7;
 }
 
 message Specialization {
@@ -65,6 +66,7 @@ message AppointmentsDurationResponse {
 
 message PatientFindRequest {
   string surname = 1;
+  string name = 2;
   string phone = 3;
 }
 
@@ -83,10 +85,12 @@ message MakeAppointmentRequest {
   string time = 8;
   string doctor_id = 9;
   string note = 10;
+  string additional = 11;
 }
 
 message MakeAppointmentResponse {
-  int32 id = 1;
+  int32 patient_id = 1;
+  int32 appointment_id = 2;
 }
 
 message HealthcheckResponse {
