@@ -24,6 +24,7 @@ const (
 	Medods_AppointmentsDuration_FullMethodName = "/proto.Medods/AppointmentsDuration"
 	Medods_PatientFind_FullMethodName          = "/proto.Medods/PatientFind"
 	Medods_MakeAppointment_FullMethodName      = "/proto.Medods/MakeAppointment"
+	Medods_AppointmentConfirm_FullMethodName   = "/proto.Medods/AppointmentConfirm"
 	Medods_Healthcheck_FullMethodName          = "/proto.Medods/Healthcheck"
 )
 
@@ -36,6 +37,7 @@ type MedodsClient interface {
 	AppointmentsDuration(ctx context.Context, in *AppointmentsDurationRequest, opts ...grpc.CallOption) (*AppointmentsDurationResponse, error)
 	PatientFind(ctx context.Context, in *PatientFindRequest, opts ...grpc.CallOption) (*PatientFindResponse, error)
 	MakeAppointment(ctx context.Context, in *MakeAppointmentRequest, opts ...grpc.CallOption) (*MakeAppointmentResponse, error)
+	AppointmentConfirm(ctx context.Context, in *AppointmentConfirmRequest, opts ...grpc.CallOption) (*Empty, error)
 	Healthcheck(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*HealthcheckResponse, error)
 }
 
@@ -92,6 +94,15 @@ func (c *medodsClient) MakeAppointment(ctx context.Context, in *MakeAppointmentR
 	return out, nil
 }
 
+func (c *medodsClient) AppointmentConfirm(ctx context.Context, in *AppointmentConfirmRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Medods_AppointmentConfirm_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *medodsClient) Healthcheck(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*HealthcheckResponse, error) {
 	out := new(HealthcheckResponse)
 	err := c.cc.Invoke(ctx, Medods_Healthcheck_FullMethodName, in, out, opts...)
@@ -110,6 +121,7 @@ type MedodsServer interface {
 	AppointmentsDuration(context.Context, *AppointmentsDurationRequest) (*AppointmentsDurationResponse, error)
 	PatientFind(context.Context, *PatientFindRequest) (*PatientFindResponse, error)
 	MakeAppointment(context.Context, *MakeAppointmentRequest) (*MakeAppointmentResponse, error)
+	AppointmentConfirm(context.Context, *AppointmentConfirmRequest) (*Empty, error)
 	Healthcheck(context.Context, *Empty) (*HealthcheckResponse, error)
 	mustEmbedUnimplementedMedodsServer()
 }
@@ -132,6 +144,9 @@ func (UnimplementedMedodsServer) PatientFind(context.Context, *PatientFindReques
 }
 func (UnimplementedMedodsServer) MakeAppointment(context.Context, *MakeAppointmentRequest) (*MakeAppointmentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MakeAppointment not implemented")
+}
+func (UnimplementedMedodsServer) AppointmentConfirm(context.Context, *AppointmentConfirmRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AppointmentConfirm not implemented")
 }
 func (UnimplementedMedodsServer) Healthcheck(context.Context, *Empty) (*HealthcheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Healthcheck not implemented")
@@ -239,6 +254,24 @@ func _Medods_MakeAppointment_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Medods_AppointmentConfirm_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AppointmentConfirmRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MedodsServer).AppointmentConfirm(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Medods_AppointmentConfirm_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MedodsServer).AppointmentConfirm(ctx, req.(*AppointmentConfirmRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Medods_Healthcheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
@@ -283,6 +316,10 @@ var Medods_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MakeAppointment",
 			Handler:    _Medods_MakeAppointment_Handler,
+		},
+		{
+			MethodName: "AppointmentConfirm",
+			Handler:    _Medods_AppointmentConfirm_Handler,
 		},
 		{
 			MethodName: "Healthcheck",

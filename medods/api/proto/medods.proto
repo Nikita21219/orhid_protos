@@ -10,6 +10,7 @@ service Medods {
   rpc AppointmentsDuration(AppointmentsDurationRequest) returns (AppointmentsDurationResponse) {}
   rpc PatientFind(PatientFindRequest) returns (PatientFindResponse) {}
   rpc MakeAppointment(MakeAppointmentRequest) returns (MakeAppointmentResponse) {}
+  rpc AppointmentConfirm(AppointmentConfirmRequest) returns (Empty) {}
   rpc Healthcheck(Empty) returns (HealthcheckResponse) {}
 }
 
@@ -91,6 +92,11 @@ message MakeAppointmentRequest {
 message MakeAppointmentResponse {
   int32 patient_id = 1;
   int32 appointment_id = 2;
+}
+
+message AppointmentConfirmRequest {
+  string note = 1;
+  int32 appointmentId = 2;
 }
 
 message HealthcheckResponse {
