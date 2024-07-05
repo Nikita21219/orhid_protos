@@ -97,6 +97,7 @@ message MakeAppointmentResponse {
 message AppointmentConfirmRequest {
   string note = 1;
   int32 appointmentId = 2;
+  bool confirm = 3;
 }
 
 message HealthcheckResponse {
