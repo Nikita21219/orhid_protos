@@ -117,5 +117,5 @@ message GetAppointmentResponse {
   string status = 5;
   string date = 6;
   string time = 7;
-  string duration = 8;
+  int32 duration = 8;
 }
