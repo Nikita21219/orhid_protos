@@ -25,6 +25,7 @@ const (
 	Medods_PatientFind_FullMethodName          = "/proto.Medods/PatientFind"
 	Medods_MakeAppointment_FullMethodName      = "/proto.Medods/MakeAppointment"
 	Medods_AppointmentConfirm_FullMethodName   = "/proto.Medods/AppointmentConfirm"
+	Medods_GetAppointment_FullMethodName       = "/proto.Medods/GetAppointment"
 	Medods_Healthcheck_FullMethodName          = "/proto.Medods/Healthcheck"
 )
 
@@ -38,6 +39,7 @@ type MedodsClient interface {
 	PatientFind(ctx context.Context, in *PatientFindRequest, opts ...grpc.CallOption) (*PatientFindResponse, error)
 	MakeAppointment(ctx context.Context, in *MakeAppointmentRequest, opts ...grpc.CallOption) (*MakeAppointmentResponse, error)
 	AppointmentConfirm(ctx context.Context, in *AppointmentConfirmRequest, opts ...grpc.CallOption) (*Empty, error)
+	GetAppointment(ctx context.Context, in *GetAppointmentRequest, opts ...grpc.CallOption) (*GetAppointmentResponse, error)
 	Healthcheck(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*HealthcheckResponse, error)
 }
 
@@ -103,6 +105,15 @@ func (c *medodsClient) AppointmentConfirm(ctx context.Context, in *AppointmentCo
 	return out, nil
 }
 
+func (c *medodsClient) GetAppointment(ctx context.Context, in *GetAppointmentRequest, opts ...grpc.CallOption) (*GetAppointmentResponse, error) {
+	out := new(GetAppointmentResponse)
+	err := c.cc.Invoke(ctx, Medods_GetAppointment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *medodsClient) Healthcheck(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*HealthcheckResponse, error) {
 	out := new(HealthcheckResponse)
 	err := c.cc.Invoke(ctx, Medods_Healthcheck_FullMethodName, in, out, opts...)
@@ -122,6 +133,7 @@ type MedodsServer interface {
 	PatientFind(context.Context, *PatientFindRequest) (*PatientFindResponse, error)
 	MakeAppointment(context.Context, *MakeAppointmentRequest) (*MakeAppointmentResponse, error)
 	AppointmentConfirm(context.Context, *AppointmentConfirmRequest) (*Empty, error)
+	GetAppointment(context.Context, *GetAppointmentRequest) (*GetAppointmentResponse, error)
 	Healthcheck(context.Context, *Empty) (*HealthcheckResponse, error)
 	mustEmbedUnimplementedMedodsServer()
 }
@@ -147,6 +159,9 @@ func (UnimplementedMedodsServer) MakeAppointment(context.Context, *MakeAppointme
 }
 func (UnimplementedMedodsServer) AppointmentConfirm(context.Context, *AppointmentConfirmRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AppointmentConfirm not implemented")
+}
+func (UnimplementedMedodsServer) GetAppointment(context.Context, *GetAppointmentRequest) (*GetAppointmentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAppointment not implemented")
 }
 func (UnimplementedMedodsServer) Healthcheck(context.Context, *Empty) (*HealthcheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Healthcheck not implemented")
@@ -272,6 +287,24 @@ func _Medods_AppointmentConfirm_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Medods_GetAppointment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAppointmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MedodsServer).GetAppointment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Medods_GetAppointment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MedodsServer).GetAppointment(ctx, req.(*GetAppointmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Medods_Healthcheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
@@ -320,6 +353,10 @@ var Medods_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AppointmentConfirm",
 			Handler:    _Medods_AppointmentConfirm_Handler,
+		},
+		{
+			MethodName: "GetAppointment",
+			Handler:    _Medods_GetAppointment_Handler,
 		},
 		{
 			MethodName: "Healthcheck",
