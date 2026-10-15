@@ -1244,6 +1244,7 @@ func (x *MriEntryType) GetCategoryTitle() string {
 type MriEntryTypesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	EntryTypes    []*MriEntryType        `protobuf:"bytes,1,rep,name=entry_types,json=entryTypes,proto3" json:"entry_types,omitempty"`
+	UpdatedAt     int64                  `protobuf:"varint,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1283,6 +1284,13 @@ func (x *MriEntryTypesResponse) GetEntryTypes() []*MriEntryType {
 		return x.EntryTypes
 	}
 	return nil
+}
+
+func (x *MriEntryTypesResponse) GetUpdatedAt() int64 {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return 0
 }
 
 type EntryTypeScheduleRequest struct {
@@ -1630,10 +1638,12 @@ const file_medods_proto_rawDesc = "" +
 	"doctor_ids\x18\x05 \x03(\x05R\tdoctorIds\x12\x1f\n" +
 	"\vcategory_id\x18\x06 \x01(\x05R\n" +
 	"categoryId\x12%\n" +
-	"\x0ecategory_title\x18\a \x01(\tR\rcategoryTitle\"M\n" +
+	"\x0ecategory_title\x18\a \x01(\tR\rcategoryTitle\"l\n" +
 	"\x15MriEntryTypesResponse\x124\n" +
 	"\ventry_types\x18\x01 \x03(\v2\x13.proto.MriEntryTypeR\n" +
-	"entryTypes\"[\n" +
+	"entryTypes\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x02 \x01(\x03R\tupdatedAt\"[\n" +
 	"\x18EntryTypeScheduleRequest\x12\"\n" +
 	"\rentry_type_id\x18\x01 \x01(\x05R\ventryTypeId\x12\x1b\n" +
 	"\tclinic_id\x18\x02 \x01(\x05R\bclinicId\"\\\n" +
